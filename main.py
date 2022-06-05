@@ -16,10 +16,28 @@ def main():
     for stop in filtered_stops:
         stop_id = stop['stopId']
         data = requests.get(f'http://api.zdiz.gdynia.pl/pt/delays?stopId={stop_id}')
-        delay_data.extend(data.json()['delay'])
+        d = data.json()['delay']
+        for line in d:
 
-    pprint(delay_data)
+            print()
+            print(f'Nazwa przystanku: {line["headsign"]}')
+            print(f'RouteID: {line["routeId"]}')
+            if line["delayInSeconds"] > 0:
+                minutes = line["delayInSeconds"] // 60
+                seconds = line["delayInSeconds"] % 60
+                formatted_delay = f'{minutes} min {seconds} s'
+                print(f'Delay: {formatted_delay}')
+            print(f'theoreticalTime: {line["theoreticalTime"]}')
+
+
+
+
 
 
 if __name__ == '__main__':
     main()
+#Warszawska
+#Gdynia Dworzec Gł. PKP 02
+#10022
+#16:06
+#3 min 10 s
